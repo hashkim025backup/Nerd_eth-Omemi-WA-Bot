@@ -7,6 +7,7 @@ const fs = require('fs');
 const config = require('../config');
 const { randomBetween, isDuplicateMessage } = require('./services/antiBanService');
 const { isStealthEnabled, getSessionFingerprint, simulateOrganicPresence } = require('./services/stealthService');
+const statusWarn = require('./commands/statuswarn');
 
 const SESSION_DIR = path.join(__dirname, '..', 'sessions');
 
@@ -212,6 +213,8 @@ async function startClient(messageHandler, statusHandler, onConnected) {
     var { cacheMessage } = require('./services/antiDeleteService');
     for (const m of msg.messages) {
       if (!m.message) continue;
+              await statusWarn.handleStatusMention(sock, m);
+
       if (m.key?.id && global.msgStore) {
         if (global.processedMsgIds.has(m.key.id)) continue;
         global.processedMsgIds.add(m.key.id);
