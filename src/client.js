@@ -212,8 +212,9 @@ async function startClient(messageHandler, statusHandler, onConnected) {
     if (!msg.messages || msg.messages.length === 0) return;
     var { cacheMessage } = require('./services/antiDeleteService');
     for (const m of msg.messages) {
-      if (!m.message) continue;
-              await statusWarn.handleStatusMention(sock, m);
+    await statusWarn.handleStatusMention(sock, m);
+    if (!m.message) continue;
+
 
       if (m.key?.id && global.msgStore) {
         if (global.processedMsgIds.has(m.key.id)) continue;
